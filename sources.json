@@ -12,9 +12,5 @@
     {
         "scenes": "accountEntry",
         "source": "app/assistants/accountEntry-assistant.js"
-    },
-    {
-        "scenes": "comments",
-        "source": "app/assistants/comments-assistant.js"
     }
 ]

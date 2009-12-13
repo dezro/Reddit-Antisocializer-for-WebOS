@@ -105,54 +105,6 @@ Reddit.getLinks = function(subreddit, section, args, tries) {
     });
 }
 
-Reddit.getComments = function(thingId, subreddit, permalink, sort, tries) {
-    if (tries === undefined)
-        tries = 0;
-    
-    var url = Reddit.url + Reddit.sub + subreddit + '/' + 'comments/' + thingId + '/';
-    if (permalink)
-        url += '_/' + permalink + '/';
-    url += Reddit.ext;
-    
-    var args = {};
-    if (sort)
-        args.sort = sort;
-    
-    var headers = { cookie: Reddit.currentAccount.cookie };
-    
-    new Ajax.Request(url, {
-        method:'get',
-        parameters:args,
-        requestHeaders:headers,
-        onSuccess: function(request) {
-            var reply = request.responseText.evalJSON();
-            var link = reply[0].data.children[0].data;
-            var comments = reply[1].data.children;
-            
-            Mojo.Controller.getAppController().sendToNotificationChain({
-                type: "commentsUpdate",
-                id: thingId,
-                link: link,
-                permalink: permalink,
-                comments: comments
-            });
-        },
-        onFailure: function(request) {
-            throw "HTTP Failure.";
-        },
-        onException: function(request, e) {
-            Mojo.Controller.getAppController().sendToNotificationChain({
-                type:"commentsUpdateProblem",
-                thingId:thingId,
-                subreddit:subreddit,
-                permalink:permalink,
-                sort:sort,
-                tries:tries+1
-            });
-        }
-    });
-}
-
 Reddit.login = function(account) {
     var url = Reddit.url + Reddit.api.login + Reddit.ext;
     new Ajax.Request(url, {
@@ -349,10 +301,6 @@ Reddit.arrowFormatter = function(likes) {
         return "dislikes";
     else
         return "unvoted";
-}
-
-Reddit.commentScoreFormatter = function(ups, object) {
-    return { score: ups - object.downs }
 }
 
 function OpenImageCard(url, thumbUrl) {

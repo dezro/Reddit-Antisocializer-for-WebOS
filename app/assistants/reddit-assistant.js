@@ -359,16 +359,6 @@ RedditAssistant.prototype.tapHeader = function(event) {
     })
 }
 
-RedditAssistant.prototype.openComments = function(item) {
-    this.controller.stageController.pushScene("comments", {linkId: item.id, subreddit: item.subreddit});
-    // this.controller.serviceRequest('palm://com.palm.applicationManager', {
-    //     method: "open",
-    //     parameters: {
-    //         target: "http://www.reddit.com/r/" + item.subreddit + "/comments/" + item.id
-    //     }
-    // })
-}
-
 RedditAssistant.prototype.download = function(url) {
     this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
         method: 'download', 
@@ -411,14 +401,10 @@ RedditAssistant.prototype.tapEntry = function(event) {
         this.controller.popupSubmenu({
             placeNear: event.originalEvent.target,
             items: [
-                {label: 'Comments', command: 'comments'},
                 {label: 'Download', command: 'download'}
             ],
             onChoose: function(command) {
                 switch (command) {
-                    case 'comments':
-                        this.openComments(event.item);
-                        break;
                     case 'download':
                         this.download(event.item.url);
                         break;
