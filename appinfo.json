@@ -1,0 +1,9 @@
+{
+	"id": "com.dezro.antisocializer",
+	"version": "1.0.0",
+	"vendor": "Dezro",
+	"type": "web",
+	"main": "index.html",
+	"title": "Antisocializer",
+	"icon": "icon.png"
+}

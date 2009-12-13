@@ -1,0 +1,20 @@
+[
+    {"source": "app/assistants/app-assistant.js"},
+    {"source": "app/assistants/stage-assistant.js"},
+    {
+        "scenes": "reddit",
+        "source": "app/assistants/reddit-assistant.js"
+    },
+    {
+        "scenes": "imageView",
+        "source": "app/assistants/imageView-assistant.js"
+    },
+    {
+        "scenes": "accountEntry",
+        "source": "app/assistants/accountEntry-assistant.js"
+    },
+    {
+        "scenes": "comments",
+        "source": "app/assistants/comments-assistant.js"
+    }
+]

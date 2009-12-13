@@ -1,0 +1,55 @@
+@import url("linkList.css");
+@import url("comments.css");
+
+body {
+    height: 100%;
+}
+
+body.redditBlue {
+    background-color: #cee3f8 !important;
+}
+
+body.redditBlue .palm-scene {
+    background-color: white;
+}
+
+a {
+    color: #369;
+}
+
+.palm-scene {
+    height: 100%;
+}
+
+#theImageView {
+    background-color: black;
+    height: 100%;
+}
+
+.envelope {
+    background: url("../images/envelope.png") 0px 0px no-repeat;
+}
+
+.envelope.red {
+    background: url("../images/envelope.png") 0px -32px no-repeat;
+}
+
+.scene-fade-top {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    height: 54px;
+    width: 100%;
+    background: url("../images/scene-fade-top.png");
+    -webkit-palm-mouse-target: ignore;
+}
+
+.scene-fade-bottom {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    height: 54px;
+    width: 100%;
+    background: url("../images/scene-fade-bottom.png");
+    -webkit-palm-mouse-target: ignore;
+}

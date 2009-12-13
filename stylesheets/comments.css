@@ -1,0 +1,139 @@
+.comments {
+    font-size: small;
+    background: transparent !important;
+}
+
+.comments *.selected {
+    background: pink !important;
+}
+
+.comments .vote {
+    float: left;
+    margin-right: 0.25em;
+    min-width:2.5em;
+}
+
+.comments .comments-page-list .vote {
+    width: 11px;
+    min-width: 11px;
+}
+
+.comments .score {
+    text-align:center;
+    color:#c6c6c6;
+    font-weight:bold;
+}
+
+.comments .score.likes {
+    color:#FF8B60;
+}
+.comments .score.dislikes {
+    color:#9494FF;
+}
+
+.comments .arrow {
+    width:100%;
+    height:8px;
+    display:block;
+}
+
+.comments .arrow.up {
+    background:url("../images/arrows.png") center 0px no-repeat;
+}
+.comments .arrow.up.likes {
+    background:url("../images/arrows.png") center -8px no-repeat;
+}
+.comments .arrow.down {
+    background:url("../images/arrows.png") center -16px no-repeat;
+}
+.comments .arrow.down.dislikes {
+    background:url("../images/arrows.png") center -24px no-repeat;
+}
+
+.comments .comments-page-link {
+    margin: 6px;
+    margin-top: 12px;
+    padding: 3px;
+    border: 1px solid #369;
+    background-color:white;
+}
+
+.comments .comments-page-list {
+    margin: 6px;
+    border: 1px solid #369;
+    background-color:white;
+}
+
+.comments .title {
+    color:blue;
+}
+
+.comments .base-comment {
+    padding: 3px;
+}
+
+.comments .children {
+    margin-left: 8px;
+}
+
+.comments .children.odd {
+    border-left: solid #369 2px;
+}
+
+.comments .children.even {
+    border-left: solid red 2px;
+}
+
+.comments .chidren > * {
+    margin-left: 1px;
+}
+
+.comments .selftext:empty {
+    display:none;
+}
+
+.comments .selftext {
+    padding:0 5px;
+    background-color:#fafafa;
+    border:1px solid #369;
+    -webkit-border-radius:7px;
+}
+
+.comments .comments-page-link .selftext p, .comments .comment .body p {
+    font-size: inherit;
+    padding: 0;
+    margin: 0;
+    padding-top:0.5ex;
+    padding-bottom:0.5ex;
+}
+
+.comments blockquote {
+    padding:2px;
+    margin:0;
+    margin-left:1em;
+    border-left:2px solid green;
+    border-right:2px solid green;
+    -webkit-border-radius:7px;
+}
+
+.comments .comments-page-link .selftext p:first-of-type, .comments .comment .body p:first-of-type {
+    padding-top:0;
+}
+.comments .comments-page-link .selftext p:last-of-type, .comments .comment .body p:last-of-type {
+    padding-bottom:0;
+}
+
+.comments .tag-line {
+    font-size: smaller;
+    color:#888;
+    margin-bottom: 4px;
+}
+
+.comments .author {
+    color: #369;
+    font-weight: bold;
+}
+
+.permalink {
+    background-color: pink;
+}

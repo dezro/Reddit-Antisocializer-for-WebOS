@@ -1,0 +1,29 @@
+<div class="palm-row redditRow link" x-mojo-tap-highlight="momentary">
+    <div class="counter">#{number}</div>
+    <div class="vote">
+        <div class="arrow up #{likesFormatted}"></div>
+        <div class="score #{likesFormatted}">#{score}</div>
+        <div class="arrow down #{likesFormatted}"></div>
+    </div>
+    <div class="entry">
+        <div class="thumbnail #{hasThumbnail}"><img src="#{thumbnail}"></div>
+        <div>
+            <div class="title_line">
+                <span class="entry_title">#{-title}</span>
+                <span class="domain">(#{domain})</span>
+            </div>
+            <div class="tagline">
+                submitted #{created_utcFormatted} ago by
+                <span class="author">#{author}</span>
+                <span class="to-subreddit">
+                    to
+                    <span class="subreddit">#{subreddit}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="options">
+        <div class="commentCount">#{num_comments}</div>
+        <div class="dot-dot-dot">...</div>
+    </div>
+</div>
