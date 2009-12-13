@@ -18,9 +18,6 @@ function RedditAssistant(args) {
             this.count = args.count;
     }
     Reddit.updateSubredditMenu();
-    
-    // TODO: Popup menu: Options, comment link, etc
-    // TODO: Change arrows to multi-state images
 }
 
 RedditAssistant.prototype.setup = function() {
