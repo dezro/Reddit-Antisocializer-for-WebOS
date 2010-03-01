@@ -37,10 +37,10 @@ RedditAssistant.prototype.setup = function() {
         {
             visible: true,
             items: [ 
-                // {label: "About Antisocializer...", command: 'do-myAbout'},
+                // {label: "About Antisocializer", command: 'do-myAbout'},
                 Mojo.Menu.editItem,
-                { label: "Preferences...", command: 'do-redditPrefs' },
-                { label: "Help...", command: 'do-redditHelp', disabled: true }
+                { label: "Accounts", command: 'do-redditPrefs' },
+                { label: "Help", command: 'do-redditHelp', disabled: true }
             ]
         }
     );
