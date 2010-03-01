@@ -8,6 +8,10 @@ Reddit.ext = '.json';
 Reddit.api = {}
 Reddit.api.vote = 'api/vote/';
 Reddit.api.login = 'api/login/';
+Reddit.api.save = 'api/save/';
+Reddit.api.unsave = 'api/unsave/';
+Reddit.api.hide = 'api/hide/';
+Reddit.api.unhide = 'api/unhide/';
 
 Reddit.linkType = 't3_';
 Reddit.commentType = 't1_';
@@ -94,6 +98,7 @@ Reddit.getLinks = function(subreddit, section, args, tries) {
             throw "HTTP Failure.";
         },
         onException: function(request, e) {
+            Mojo.Log.logException(e, "getLinks");
             Mojo.Controller.getAppController().sendToNotificationChain({
                 type:"linksUpdateProblem",
                 subreddit:subreddit,
@@ -124,6 +129,7 @@ Reddit.login = function(account) {
                 {type:"loginFailed"});
         },
         onException: function(response, err) {
+            Mojo.Log.logException(err, "login");
             Mojo.Controller.getAppController().sendToNotificationChain(
                 {type:"loginFailed"});
         }
@@ -227,8 +233,97 @@ Reddit.vote = function(id, direction, type) {
                 {type:"voteFailed", id:id});
         },
         onException: function(response, err) {
+            Mojo.Log.logException(err, "vote");
             Mojo.Controller.getAppController().sendToNotificationChain(
                 {type:"voteFailed", id:id});
+        }
+    });
+}
+
+Reddit.saveLink = function(id, type) {
+    if (!Reddit.currentAccount.username)
+        return;
+    if (!type)
+        type = Reddit.linkType;
+    
+    var url = Reddit.url + Reddit.api.save + Reddit.ext;
+    new Ajax.Request(url, {
+        requestHeaders: { cookie: Reddit.currentAccount.cookie },
+        parameters: { id: type + id, uh: Reddit.modhash },
+        onFailure: function(response) {
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"saveLinkFailed", id:id});
+        },
+        onException: function(response, err) {
+            Mojo.Log.logException(err, "saveLink");
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"saveLinkFailed", id:id});
+        }
+    });
+}
+
+Reddit.unsaveLink = function(id, type) {
+    if (!Reddit.currentAccount.username)
+        return;
+    if (!type)
+        type = Reddit.linkType;
+    
+    var url = Reddit.url + Reddit.api.unsave + Reddit.ext;
+    new Ajax.Request(url, {
+        requestHeaders: { cookie: Reddit.currentAccount.cookie },
+        parameters: { id: type + id, uh: Reddit.modhash },
+        onFailure: function(response) {
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"unsaveLinkFailed", id:id});
+        },
+        onException: function(response, err) {
+            Mojo.Log.logException(err, "unsaveLink");
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"unsaveLinkFailed", id:id});
+        }
+    });
+}
+
+Reddit.hideLink = function(id, type) {
+    if (!Reddit.currentAccount.username)
+        return;
+    if (!type)
+        type = Reddit.linkType;
+    
+    var url = Reddit.url + Reddit.api.hide + Reddit.ext;
+    new Ajax.Request(url, {
+        requestHeaders: { cookie: Reddit.currentAccount.cookie },
+        parameters: { id: type + id, uh: Reddit.modhash },
+        onFailure: function(response) {
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"hideLinkFailed", id:id});
+        },
+        onException: function(response, err) {
+            Mojo.Log.logException(err, "hideLink");
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"hideLinkFailed", id:id});
+        }
+    });
+}
+
+Reddit.unhideLink = function(id, type) {
+    if (!Reddit.currentAccount.username)
+        return;
+    if (!type)
+        type = Reddit.linkType;
+    
+    var url = Reddit.url + Reddit.api.unhide + Reddit.ext;
+    new Ajax.Request(url, {
+        requestHeaders: { cookie: Reddit.currentAccount.cookie },
+        parameters: { id: type + id, uh: Reddit.modhash },
+        onFailure: function(response) {
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"unhideLinkFailed", id:id});
+        },
+        onException: function(response, err) {
+            Mojo.Log.logException(err, "unhideLink");
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"unhideLinkFailed", id:id});
         }
     });
 }
@@ -248,7 +343,7 @@ Reddit.getHeaderUrlFromDoc = function(doc) {
 
 Reddit.updateModHashFromDoc = function(doc) {
     var uhs = doc.getElementsByName("uh");
-    if (uhs && uhs[0].value)
+    if (uhs && uhs[0] && uhs[0].value)
         Reddit.modhash = uhs[0].value;
 }
 
@@ -301,6 +396,35 @@ Reddit.arrowFormatter = function(likes) {
         return "dislikes";
     else
         return "unvoted";
+}
+
+Reddit.commentScoreFormatter = function(ups, object) {
+    return { score: ups - object.downs }
+}
+
+Reddit.thumbFormatter = function(thumbUrl) {
+    if (!thumbUrl)
+        return thumbUrl;
+    start = thumbUrl.toLowerCase().slice(0,7);
+    if (start != "http://" && start != "https:/") {
+        return Reddit.url + thumbUrl.slice(1);
+    }
+    else
+        return thumbUrl;
+}
+
+Reddit.savedFormatter = function(saved) {
+    if (saved)
+        return "saved";
+    else
+        return "unsaved";
+}
+
+Reddit.hiddenFormatted = function(hidden) {
+    if (hidden)
+        return "hidden";
+    else
+        return "";
 }
 
 function OpenImageCard(url, thumbUrl) {

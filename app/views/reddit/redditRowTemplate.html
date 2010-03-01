@@ -1,4 +1,4 @@
-<div class="palm-row redditRow link" x-mojo-tap-highlight="momentary">
+<div class="palm-row redditRow link #{hiddenFormatted}" x-mojo-tap-highlight="momentary">
     <div class="counter">#{number}</div>
     <div class="vote">
         <div class="arrow up #{likesFormatted}"></div>
@@ -6,7 +6,7 @@
         <div class="arrow down #{likesFormatted}"></div>
     </div>
     <div class="entry">
-        <div class="thumbnail #{hasThumbnail}"><img src="#{thumbnail}"></div>
+        <div class="thumbnail #{hasThumbnail}"><img src="#{thumbnailFormatted}"></div>
         <div>
             <div class="title_line">
                 <span class="entry_title">#{-title}</span>
@@ -19,6 +19,7 @@
                     to
                     <span class="subreddit">#{subreddit}</span>
                 </span>
+                <span class="savedIcon #{savedFormatted}">Saved.</span>
             </div>
         </div>
     </div>
