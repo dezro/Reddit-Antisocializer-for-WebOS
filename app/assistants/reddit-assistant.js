@@ -72,9 +72,10 @@ RedditAssistant.prototype.setup = function() {
             listTemplate: 'reddit/redditListTemplate',
             formatters: {
                 created_utc: Reddit.timeFormatter,
-                likes: Reddit.arrowFormatter
+                likes: Reddit.arrowFormatter,
+                thumbnail: Reddit.thumbFormatter
             }
-        }
+        }, {items: []}
     );
     
     this.controller.setupWidget("fullScreenSpinner",
@@ -269,6 +270,7 @@ RedditAssistant.prototype.updateSubreddit = function(subreddit) {
             this.maybeChangeScreen();
         }.bind(this),
         onException: function(response, err) {
+            Mojo.Log.logException(err, "updateSubreddit");
             ; //todo: something
         }.bind(this)
     });

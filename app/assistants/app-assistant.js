@@ -94,6 +94,7 @@ Reddit.getLinks = function(subreddit, section, args, tries) {
             throw "HTTP Failure.";
         },
         onException: function(request, e) {
+            Mojo.Log.logException(e, "getLinks");
             Mojo.Controller.getAppController().sendToNotificationChain({
                 type:"linksUpdateProblem",
                 subreddit:subreddit,
@@ -141,6 +142,7 @@ Reddit.getComments = function(thingId, subreddit, permalink, sort, tries) {
             throw "HTTP Failure.";
         },
         onException: function(request, e) {
+            Mojo.Log.logException(e, "getComments");
             Mojo.Controller.getAppController().sendToNotificationChain({
                 type:"commentsUpdateProblem",
                 thingId:thingId,
@@ -172,6 +174,7 @@ Reddit.login = function(account) {
                 {type:"loginFailed"});
         },
         onException: function(response, err) {
+            Mojo.Log.logException(err, "login");
             Mojo.Controller.getAppController().sendToNotificationChain(
                 {type:"loginFailed"});
         }
@@ -275,6 +278,7 @@ Reddit.vote = function(id, direction, type) {
                 {type:"voteFailed", id:id});
         },
         onException: function(response, err) {
+            Mojo.Log.logException(err, "vote");
             Mojo.Controller.getAppController().sendToNotificationChain(
                 {type:"voteFailed", id:id});
         }
@@ -296,7 +300,7 @@ Reddit.getHeaderUrlFromDoc = function(doc) {
 
 Reddit.updateModHashFromDoc = function(doc) {
     var uhs = doc.getElementsByName("uh");
-    if (uhs && uhs[0].value)
+    if (uhs && uhs[0] && uhs[0].value)
         Reddit.modhash = uhs[0].value;
 }
 
@@ -353,6 +357,17 @@ Reddit.arrowFormatter = function(likes) {
 
 Reddit.commentScoreFormatter = function(ups, object) {
     return { score: ups - object.downs }
+}
+
+Reddit.thumbFormatter = function(thumbUrl) {
+    if (!thumbUrl)
+        return thumbUrl;
+    start = thumbUrl.toLowerCase().slice(0,7);
+    if (start != "http://" && start != "https:/") {
+        return Reddit.url + thumbUrl.slice(1);
+    }
+    else
+        return thumbUrl;
 }
 
 function OpenImageCard(url, thumbUrl) {
