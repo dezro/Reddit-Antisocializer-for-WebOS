@@ -459,7 +459,7 @@ RedditAssistant.prototype.tapEntry = function(event) {
                         this.controller.serviceRequest('palm://com.palm.applicationManager', {
                             method: "open",
                             parameters: {
-                                target: 'http://www.reddit.com/r/' + event.item.subreddit + '/shirt/' + event.id + '/'
+                                target: 'http://www.reddit.com/r/' + event.item.subreddit + '/shirt/' + event.item.id + '/'
                             }
                         });
                         break;
