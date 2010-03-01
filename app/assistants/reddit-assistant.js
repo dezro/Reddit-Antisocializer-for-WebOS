@@ -359,6 +359,15 @@ RedditAssistant.prototype.tapHeader = function(event) {
     })
 }
 
+RedditAssistant.prototype.openComments = function(item) {
+    this.controller.serviceRequest('palm://com.palm.applicationManager', {
+        method: "open",
+        parameters: {
+            target: "http://www.reddit.com/r/" + item.subreddit + "/comments/" + item.id
+        }
+    })
+}
+
 RedditAssistant.prototype.saveLink = function(event, item) {
     Reddit.saveLink(item.id);
     var icon = event.target.up('.redditRow').down('.savedIcon');
@@ -435,6 +444,7 @@ RedditAssistant.prototype.tapEntry = function(event) {
         this.controller.popupSubmenu({
             placeNear: event.originalEvent.target,
             items: [
+                {label: 'Comments', command: 'comments'},
                 saveItem,
                 // {label: 'Report', command: 'report'},
                 {label: 'Hide', command: 'hide'},
@@ -443,6 +453,9 @@ RedditAssistant.prototype.tapEntry = function(event) {
             ],
             onChoose: function(command) {
                 switch (command) {
+                    case 'comments':
+                        this.openComments(event.item);
+                        break;
                     case 'save':
                         this.saveLink(event.originalEvent, event.item);
                         break;
