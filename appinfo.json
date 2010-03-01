@@ -1,6 +1,6 @@
 {
 	"id": "com.dezro.antisocializer",
-	"version": "1.0.0",
+	"version": "0.9.0",
 	"vendor": "Dezro",
 	"type": "web",
 	"main": "index.html",
