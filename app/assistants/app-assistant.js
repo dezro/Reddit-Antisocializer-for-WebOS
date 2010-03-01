@@ -8,6 +8,10 @@ Reddit.ext = '.json';
 Reddit.api = {}
 Reddit.api.vote = 'api/vote/';
 Reddit.api.login = 'api/login/';
+Reddit.api.save = 'api/save/';
+Reddit.api.unsave = 'api/unsave/';
+Reddit.api.hide = 'api/hide/';
+Reddit.api.unhide = 'api/unhide/';
 
 Reddit.linkType = 't3_';
 Reddit.commentType = 't1_';
@@ -285,6 +289,94 @@ Reddit.vote = function(id, direction, type) {
     });
 }
 
+Reddit.saveLink = function(id, type) {
+    if (!Reddit.currentAccount.username)
+        return;
+    if (!type)
+        type = Reddit.linkType;
+    
+    var url = Reddit.url + Reddit.api.save + Reddit.ext;
+    new Ajax.Request(url, {
+        requestHeaders: { cookie: Reddit.currentAccount.cookie },
+        parameters: { id: type + id, uh: Reddit.modhash },
+        onFailure: function(response) {
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"saveLinkFailed", id:id});
+        },
+        onException: function(response, err) {
+            Mojo.Log.logException(err, "saveLink");
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"saveLinkFailed", id:id});
+        }
+    });
+}
+
+Reddit.unsaveLink = function(id, type) {
+    if (!Reddit.currentAccount.username)
+        return;
+    if (!type)
+        type = Reddit.linkType;
+    
+    var url = Reddit.url + Reddit.api.unsave + Reddit.ext;
+    new Ajax.Request(url, {
+        requestHeaders: { cookie: Reddit.currentAccount.cookie },
+        parameters: { id: type + id, uh: Reddit.modhash },
+        onFailure: function(response) {
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"unsaveLinkFailed", id:id});
+        },
+        onException: function(response, err) {
+            Mojo.Log.logException(err, "unsaveLink");
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"unsaveLinkFailed", id:id});
+        }
+    });
+}
+
+Reddit.hideLink = function(id, type) {
+    if (!Reddit.currentAccount.username)
+        return;
+    if (!type)
+        type = Reddit.linkType;
+    
+    var url = Reddit.url + Reddit.api.hide + Reddit.ext;
+    new Ajax.Request(url, {
+        requestHeaders: { cookie: Reddit.currentAccount.cookie },
+        parameters: { id: type + id, uh: Reddit.modhash },
+        onFailure: function(response) {
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"hideLinkFailed", id:id});
+        },
+        onException: function(response, err) {
+            Mojo.Log.logException(err, "hideLink");
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"hideLinkFailed", id:id});
+        }
+    });
+}
+
+Reddit.unhideLink = function(id, type) {
+    if (!Reddit.currentAccount.username)
+        return;
+    if (!type)
+        type = Reddit.linkType;
+    
+    var url = Reddit.url + Reddit.api.unhide + Reddit.ext;
+    new Ajax.Request(url, {
+        requestHeaders: { cookie: Reddit.currentAccount.cookie },
+        parameters: { id: type + id, uh: Reddit.modhash },
+        onFailure: function(response) {
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"unhideLinkFailed", id:id});
+        },
+        onException: function(response, err) {
+            Mojo.Log.logException(err, "unhideLink");
+            Mojo.Controller.getAppController().sendToNotificationChain(
+                {type:"unhideLinkFailed", id:id});
+        }
+    });
+}
+
 Reddit.getDocumentFromXHTML = function(xhtmlString) {
     parser = new DOMParser();
     return parser.parseFromString(xhtmlString, "application/xhtml+xml");
@@ -368,6 +460,20 @@ Reddit.thumbFormatter = function(thumbUrl) {
     }
     else
         return thumbUrl;
+}
+
+Reddit.savedFormatter = function(saved) {
+    if (saved)
+        return "saved";
+    else
+        return "unsaved";
+}
+
+Reddit.hiddenFormatted = function(hidden) {
+    if (hidden)
+        return "hidden";
+    else
+        return "";
 }
 
 function OpenImageCard(url, thumbUrl) {

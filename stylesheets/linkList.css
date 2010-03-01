@@ -104,6 +104,10 @@ body.redditBlue .linkList .palm-menu.command-menu > .palm-menu-fade {
     padding-right: 0;
 }
 
+.redditRow.hidden {
+    display:none;
+}
+
 .redditRow .vote {
     font-size:larger;
     min-width:2.5em;
@@ -179,6 +183,10 @@ body.redditBlue .linkList .palm-menu.command-menu > .palm-menu-fade {
     padding-top: 16px;
     min-width: 16px;
     color: #5f99cf;
+}
+
+span.savedIcon.unsaved {
+    display: none;
 }
 
 #advertisementRow {

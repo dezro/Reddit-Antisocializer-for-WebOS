@@ -73,7 +73,8 @@ RedditAssistant.prototype.setup = function() {
             formatters: {
                 created_utc: Reddit.timeFormatter,
                 likes: Reddit.arrowFormatter,
-                thumbnail: Reddit.thumbFormatter
+                thumbnail: Reddit.thumbFormatter,
+                saved: Reddit.savedFormatter
             }
         }, {items: []}
     );
@@ -368,6 +369,36 @@ RedditAssistant.prototype.openComments = function(item) {
     // })
 }
 
+RedditAssistant.prototype.saveLink = function(event, item) {
+    Reddit.saveLink(item.id);
+    var icon = event.target.up('.redditRow').down('.savedIcon');
+    icon.removeClassName("unsaved");
+    icon.addClassName("saved");
+    item.saved = true;
+}
+
+RedditAssistant.prototype.unsaveLink = function(event, item) {
+    Reddit.unsaveLink(item.id);
+    var icon = event.target.up('.redditRow').down('.savedIcon');
+    icon.removeClassName("saved");
+    icon.addClassName("unsaved");
+    item.saved = false;
+}
+
+RedditAssistant.prototype.hideLink = function(event, item) {
+    Reddit.hideLink(item.id);
+    var row = event.target.up('.redditRow');
+    row.addClassName("hidden");
+    item.hidden = true;
+}
+
+RedditAssistant.prototype.unhideLink = function(event, item) {
+    Reddit.unhideLink(item.id);
+    var row = event.target.up('.redditRow');
+    row.removeClassName("hidden");
+    item.hidden = false;
+}
+
 RedditAssistant.prototype.download = function(url) {
     this.controller.serviceRequest('palm://com.palm.downloadmanager/', {
         method: 'download', 
@@ -407,10 +438,18 @@ RedditAssistant.prototype.tapEntry = function(event) {
         return;
     }
     if (event.originalEvent.target.match('.options *, .options')) {
+        if (event.item.saved)
+            var saveItem = {label: 'Unsave', command: 'unsave'};
+        else
+            var saveItem = {label: 'Save', command: 'save'};
         this.controller.popupSubmenu({
             placeNear: event.originalEvent.target,
             items: [
                 {label: 'Comments', command: 'comments'},
+                saveItem,
+                // {label: 'Report', command: 'report'},
+                {label: 'Hide', command: 'hide'},
+                {label: 'Shirt', command: 'shirt'},
                 {label: 'Download', command: 'download'}
             ],
             onChoose: function(command) {
@@ -418,8 +457,25 @@ RedditAssistant.prototype.tapEntry = function(event) {
                     case 'comments':
                         this.openComments(event.item);
                         break;
+                    case 'save':
+                        this.saveLink(event.originalEvent, event.item);
+                        break;
+                    case 'unsave':
+                        this.unsaveLink(event.originalEvent, event.item);
+                        break;
+                    case 'hide':
+                        this.hideLink(event.originalEvent, event.item);
+                        break;
                     case 'download':
                         this.download(event.item.url);
+                        break;
+                    case 'shirt':
+                        this.controller.serviceRequest('palm://com.palm.applicationManager', {
+                            method: "open",
+                            parameters: {
+                                target: 'http://www.reddit.com/r/' + event.item.subreddit + '/shirt/' + event.id + '/'
+                            }
+                        });
                         break;
                 }
             }.bind(this)
@@ -447,6 +503,6 @@ RedditAssistant.prototype.tapEntry = function(event) {
                 target: url
             }
         });
-        event.target.mojo.revealItem(event.index, true);
+        // event.target.mojo.revealItem(event.index, true);
     }
 }
